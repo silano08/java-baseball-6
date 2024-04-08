@@ -42,7 +42,7 @@ public class Application {
 
 
 
-    private static void onGame(){
+    public static void onGame(){
         // 게임을 진행(랜덤한 수를 뽑고 유저가 맞출때까지 시도)
         
         List<Integer> computer = new ArrayList<>();
@@ -58,7 +58,6 @@ public class Application {
         System.out.println("디버깅을 위한" + ballNum);
 
         while (true){
-
             System.out.println("숫자를 입력해주세요 :");
             // 사용자 입력을 문자열로 받습니다.
             String temp = scanner.nextLine();
@@ -88,18 +87,24 @@ public class Application {
         return isCorrect;
     }
 
-    private static String checkNumberBall(String input){
-        // 유저가 입력한 값이 제대로된 값인지 검사
-        if (input.length() < 3) {
-            throw new RuntimeException("숫자가 너무 짧습니다.");
-        }
+    public static String checkNumberBall(String input){
         try {
+            if (input == null || input.isBlank()) {
+                throw new RuntimeException("숫자를 입력해주세요");
+            }
+
             Integer.parseInt(input); // 문자열을 정수로 변환
+
+            // 유저가 입력한 값이 제대로된 값인지 검사
+            if (input.length() < 3) {
+                throw new RuntimeException("숫자가 너무 짧습니다.");
+            }else if(input.length() > 3){
+                throw new RuntimeException("숫자가 너무 깁니다.");
+            }
+            return input;
         }catch (NumberFormatException e){
             throw new RuntimeException("정수가 아닌 입력입니다. 다시 시도해주세요.");
         }
-
-        return input;
     }
 
     private static void printResult(int strike,int ball,boolean isCorrect){

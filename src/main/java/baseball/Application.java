@@ -7,31 +7,40 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Application {
+
+    private static final Scanner scanner = new Scanner(System.in); // 전역 Scanner 객체 생성
+
     public static void main(String[] args) {
         // TODO: 프로그램 구현
         start();
+        scanner.close(); // 프로그램 종료 시 Scanner 객체 닫기
     }
 
-    public static  void start(){
-        // 게임을 시작하고
+    public static void start(){
         System.out.println("숫자 야구 게임을 시작합니다.\n");
-
-        onGame();
-
-
-        System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
-
-        if(input == 1){
+        while (true) {
+            // 게임을 시작합니다.
             onGame();
-        }else if(input == 2){
+            System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
 
-        }else{
-            System.out.println("잘못된 입력입니다.");
+            int input = scanner.nextInt();
+            scanner.nextLine(); // 숫자 입력 후 남은 줄바꿈 문자 소비
+
+            if (input == 1) {
+                // 게임 재시작
+                System.out.println("게임을 재시작합니다.");
+            } else if (input == 2) {
+                // 게임 종료
+                System.out.println("게임을 종료합니다.");
+                break;
+            } else {
+                System.out.println("잘못된 입력입니다.");
+                break;
+            }
         }
-
     }
+
+
 
     private static void onGame(){
         // 게임을 진행(랜덤한 수를 뽑고 유저가 맞출때까지 시도)
@@ -42,22 +51,20 @@ public class Application {
             int randomNumber = Randoms.pickNumberInRange(1, 9);
             if (!computer.contains(randomNumber)) {
                 computer.add(randomNumber);
-                ballNum+= Integer.toString(randomNumber);
+                ballNum += Integer.toString(randomNumber);
             }
         }
 
         System.out.println("디버깅을 위한" + ballNum);
 
-        Scanner scanner = new Scanner(System.in);
-
         while (true){
 
             System.out.println("숫자를 입력해주세요 :");
             // 사용자 입력을 문자열로 받습니다.
-            String input = checkNumberBall(scanner.nextLine());
+            String temp = scanner.nextLine();
+            String input = checkNumberBall(temp);
             if(correct(ballNum,input)) break;
         }
-        scanner.close();
     }
 
     private static boolean correct(String userNum, String computerNum){
@@ -69,7 +76,7 @@ public class Application {
         for(int i=0; i<3; i++){
             String temp = userNum.substring(i,i+1);
             if(computerNum.substring(i,i+1).equals(temp)){
-                ball+= 1;
+                strike+= 1;
             }else{
                 if(computerNum.contains(temp)) ball+= 1;
             }
@@ -104,44 +111,7 @@ public class Application {
         }else if(strike == 0 && ball>0){
             System.out.println(ball + "볼 ");
         }else if(strike>0 && ball==0){
-            System.out.println(ball + "스트라이크 ");
-        }
-    }
-
-
-    // 상태패턴 적용해보기??
-    public void play(int[] numList){
-        // 숫자를 맞출때까지 제한은없음
-        // 숫자중복은있으면안됨
-        System.out.println("숫자 야구 게임을 시작합니다.\n");
-        Scanner scanner = new Scanner(System.in);
-
-        List<Integer> computer = new ArrayList<>();
-        while (computer.size() < 3) {
-            int randomNumber = Randoms.pickNumberInRange(1, 9);
-            if (!computer.contains(randomNumber)) {
-                computer.add(randomNumber);
-            }
-        }
-
-        boolean correct = false;
-
-        while (true) { // 무한 루프
-            System.out.println("숫자를 입력해주세요 :");
-            String input = scanner.nextLine(); // 사용자 입력을 문자열로 받습니다.
-
-            try {
-                int number = Integer.parseInt(input); // 문자열을 정수로 변환
-            } catch (NumberFormatException e) {
-                if (input.length() < 3) {
-                    System.out.println("숫자가 너무 짧습니다.");
-                }
-                System.out.println("정수가 아닌 입력입니다. 다시 시도해주세요.");
-
-                continue;
-            }
-
-
+            System.out.println(strike + "스트라이크 ");
         }
     }
 }

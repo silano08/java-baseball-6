@@ -16,10 +16,7 @@ public class GameFacade {
     private static final InputValidator validator = new InputValidator();
     private static  final ResultCalculator calculator = new ResultCalculator();
 
-    public static void main(String[] args) {
-        // TODO: 프로그램 구현
-        startGame();
-        scanner.close(); // 프로그램 종료 시 Scanner 객체 닫기
+    public GameFacade() {
     }
 
     public static void startGame() {

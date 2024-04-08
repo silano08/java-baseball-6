@@ -1,11 +1,14 @@
 package baseball;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import facade.GameFacade;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import service.InputValidator;
+import service.ResultCalculator;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomNumberInRangeTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
@@ -52,22 +55,25 @@ class ApplicationTest extends NsTest {
     })
     @DisplayName("checkNumberBall 메서드의 경곗값 테스트")
     void testCheckNumberBall(String input, boolean isValid, String expectedMessage) {
+        InputValidator validator = new InputValidator();
+
         // 사용자가 입력하는 값에 대한 경곗값 테스트
         if (isValid) {
             // 정상 케이스
-            Assertions.assertEquals(input, Application.checkNumberBall(input));
+            Assertions.assertEquals(input, validator.checkNumberBall(input));
         } else {
             // 예외 케이스
-            Exception exception = Assertions.assertThrows(RuntimeException.class, () -> Application.checkNumberBall(input));
+            Exception exception = Assertions.assertThrows(RuntimeException.class, () -> validator.checkNumberBall(input));
             Assertions.assertEquals(expectedMessage, exception.getMessage());
         }
     }
 
     @Test
-    void testPrintResultWithInvalidInput() {
+    void testPrintResultWithInvalidInut() {
+        ResultCalculator calculator = new ResultCalculator();
         // 프린트문으로 결과값을 출력하는 경우 반환값이 없어 검증이 어려움...
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            Application.printResult(2, 2, false); // 스트라이크와 볼의 합이 3을 초과
+            calculator.printResult(2, 2, false); // 스트라이크와 볼의 합이 3을 초과
         });
         assertEquals("잘못된 요청입니다.", exception.getMessage());
 

@@ -107,8 +107,10 @@ public class Application {
         }
     }
 
-    private static void printResult(int strike,int ball,boolean isCorrect){
+    public static void printResult(int strike,int ball,boolean isCorrect){
         // 결과값을 출력(종료인지 아닌지)
+        if((strike + ball) > 3) throw new RuntimeException("잘못된 요청입니다.");
+
         if(isCorrect){
             System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
         }else if(strike>0 && ball>0){

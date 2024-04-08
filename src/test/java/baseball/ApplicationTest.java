@@ -48,6 +48,7 @@ class ApplicationTest extends NsTest {
             "'1234', false, '숫자가 너무 깁니다.'", // 긴 입력
             "'abc', false, '정수가 아닌 입력입니다. 다시 시도해주세요.'", // 비숫자 입력
             "'', false, '숫자를 입력해주세요'", // 빈 문자열 입력
+            "null, false, '숫자를 입력해주세요'" // null 입력
     })
     @DisplayName("checkNumberBall 메서드의 경곗값 테스트")
     void testCheckNumberBall(String input, boolean isValid, String expectedMessage) {
@@ -60,5 +61,21 @@ class ApplicationTest extends NsTest {
             Exception exception = Assertions.assertThrows(RuntimeException.class, () -> Application.checkNumberBall(input));
             Assertions.assertEquals(expectedMessage, exception.getMessage());
         }
+    }
+
+    @Test
+    void testPrintResultWithInvalidInput() {
+        // 프린트문으로 결과값을 출력하는 경우 반환값이 없어 검증이 어려움...
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            Application.printResult(2, 2, false); // 스트라이크와 볼의 합이 3을 초과
+        });
+        assertEquals("잘못된 요청입니다.", exception.getMessage());
+
+        // 사실 아래와같은 경우를 검증해야함
+//        스트라이크와 볼의 합이 3을 초과하는 경우 (예외 발생)
+//        정확히 3개의 숫자를 맞혔을 때 (게임 종료 메시지 출력)
+//        스트라이크와 볼이 모두 있는 경우
+//        오직 볼만 있는 경우
+//        오직 스트라이크만 있는 경우
     }
 }

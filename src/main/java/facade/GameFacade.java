@@ -16,8 +16,21 @@ public class GameFacade {
     private static final InputValidator validator = new InputValidator();
     private static  final ResultCalculator calculator = new ResultCalculator();
 
-    public GameFacade() {
+
+    // 싱글톤 인스턴스를 저장할 private static 변수
+    private static GameFacade instance;
+
+    // Private 생성자
+    private GameFacade() {}
+
+    // 인스턴스에 접근하기 위한 public static 메소드
+    public static GameFacade getInstance() {
+        if (instance == null) {
+            instance = new GameFacade();
+        }
+        return instance;
     }
+
 
     public static void startGame() {
         System.out.println("숫자 야구 게임을 시작합니다.\n");
@@ -45,8 +58,6 @@ public class GameFacade {
 
     public static void onGame(){
         String ballNum = generator.computerNum(); // 컴퓨터의 제안 숫자
-
-//        System.out.println("디버깅을 위한" + ballNum);
 
         while (true){
             System.out.println("숫자를 입력해주세요 :");
